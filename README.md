@@ -80,7 +80,7 @@ L’API est dispo sur [http://127.0.0.1:8010/docs](http://127.0.0.1:8010/docs).
 
 ---
 
-## 🔧 Utilisation avec Makefile
+## Utilisation avec Makefile
 
 Un `Makefile` est fourni pour simplifier les commandes :
 
