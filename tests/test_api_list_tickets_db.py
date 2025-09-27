@@ -1,8 +1,7 @@
 from fastapi.testclient import TestClient
 from app.main import app
 from app.core.db import SessionLocal
-from app.models.ticket import Ticket, Base
-from app.core.db import engine
+from app.models.ticket import Ticket
 
 def test_list_tickets_initially_empty() -> None:
     with TestClient(app) as client:
