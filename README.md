@@ -109,7 +109,7 @@ app/
 tests/              # tests Pytest
 requirements.txt    # dépendances
 Dockerfile          # build image Docker
-Makefile            # (optionnel) raccourcis
+Makefile            # raccourcis
 ```
 
 ---
