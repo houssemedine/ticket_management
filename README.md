@@ -11,8 +11,8 @@ Base de données : **SQLite en mémoire**.
 - `GET /tickets/` → lister tous les tickets  
 - `GET /tickets/{ticket_id}` → récupérer un ticket par ID  
 - `PUT /tickets/{ticket_id}` → mettre à jour un ticket  
-- `PATCH /tickets/{ticket_id}/close` → fermer un ticket (idempotent)  
-- `GET /ping` → endpoint santé  
+- `PATCH /tickets/{ticket_id}/close` → fermer un ticket
+- `GET /health` → endpoint santé  
 
 ---
 
