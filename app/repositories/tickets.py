@@ -26,6 +26,7 @@ class TicketRepository:
         return obj
 
     def get_by_id(self, ticket_id:int)-> Optional[Ticket]:
+        """Retourne un ticket par son ID, ou None si introuvable."""
         item = self.db.get(Ticket, ticket_id)
 
         return item
@@ -51,6 +52,7 @@ class TicketRepository:
         obj = self.db.get(Ticket, ticket_id)
         if obj is None:
             return None
+        #check si le ticket est déjà fermé
         if obj.status == TicketStatus.CLOSED:
             return "already_closed"
         obj.status = TicketStatus.CLOSED

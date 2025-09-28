@@ -21,6 +21,8 @@ def list_tickets(db: Session = Depends(get_db)) -> list[TicketRead]:
 
 @router.post("/", response_model=TicketRead, status_code=status.HTTP_201_CREATED)
 def create_ticket(payload: TicketCreate, db: Session = Depends(get_db)) -> TicketRead:
+    """Crée un ticket et le retourne."""
+
     repo = TicketRepository(db)
     created = repo.create(payload)
     return created
@@ -28,6 +30,8 @@ def create_ticket(payload: TicketCreate, db: Session = Depends(get_db)) -> Ticke
 
 @router.get("/{ticket_id}", response_model=TicketRead)
 def get_ticket(ticket_id: int, db: Session = Depends(get_db)) -> TicketRead:
+    """Retourne un ticket, ou une erreur 404 si introuvable."""
+
     repo = TicketRepository(db)
     obj = repo.get_by_id(ticket_id)
     if obj is None:
@@ -36,6 +40,8 @@ def get_ticket(ticket_id: int, db: Session = Depends(get_db)) -> TicketRead:
 
 @router.put("/{ticket_id}", response_model=TicketRead, status_code=status.HTTP_200_OK)
 def update_ticket(ticket_id: int, payload: TicketUpdate, db: Session = Depends(get_db)) -> TicketRead:
+    """Met à jour un ticket, retourne une erreur 404 si introuvable."""
+
     repo = TicketRepository(db)
     updated = repo.update_full(ticket_id, payload)
     if updated is None:
@@ -45,6 +51,9 @@ def update_ticket(ticket_id: int, payload: TicketUpdate, db: Session = Depends(g
 
 @router.patch("/{ticket_id}/close", response_model=TicketRead)
 def close_ticket(ticket_id: int, db: Session = Depends(get_db)) -> TicketRead:
+    """Ferme un ticket, retourne une erreur 404 si introuvable,
+    ou une erreur 400 si le ticket est déjà fermé."""
+
     repo = TicketRepository(db)
     closed = repo.close(ticket_id)
     if closed is None:
