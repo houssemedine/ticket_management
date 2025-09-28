@@ -49,4 +49,6 @@ def close_ticket(ticket_id: int, db: Session = Depends(get_db)) -> TicketRead:
     closed = repo.close(ticket_id)
     if closed is None:
         raise HTTPException(status_code=404, detail="Ticket not found")
+    if closed == "already_closed":
+        raise HTTPException(status_code=400, detail="Ticket is already closed")
     return closed

@@ -15,15 +15,20 @@ def test_patch_close_ticket_sets_status_closed() -> None:
     assert data["id"] == tid
     assert data["status"] == "closed"
 
-def test_patch_close_ticket_is_idempotent() -> None:
+def test_patch_close_ticket_returns_400_if_already_closed() -> None:
+    # crée
     r = client.post("/tickets/", json={"title": "X", "description": "Y"})
     tid = r.json()["id"]
 
-    # appelle deux fois
-    client.patch(f"/tickets/{tid}/close")
+    # 1er close → OK
+    r1 = client.patch(f"/tickets/{tid}/close")
+    assert r1.status_code == 200
+    assert r1.json()["status"] == "closed"
+
+    # 2e close → 400 "already closed"
     r2 = client.patch(f"/tickets/{tid}/close")
-    assert r2.status_code == 200
-    assert r2.json()["status"] == "closed"
+    assert r2.status_code == 400
+    assert r2.json()["detail"] == "Ticket is already closed"
 
 def test_patch_close_ticket_404_if_not_found() -> None:
     r = client.patch("/tickets/999999/close")
