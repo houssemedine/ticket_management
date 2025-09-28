@@ -1,6 +1,6 @@
-# Ticket Management API — FastAPI
+# Ticket Management API - FastAPI
 
-Mini projet d’entretien — **API de gestion de tickets** réalisée avec **FastAPI**, **SQLAlchemy**, et **Pydantic**.  
+Mini projet d’entretien - **API de gestion de tickets** réalisée avec **FastAPI**, **SQLAlchemy**, et **Pydantic**.  
 Base de données : **SQLite en mémoire**.
 
 ---
@@ -12,7 +12,7 @@ Base de données : **SQLite en mémoire**.
 - `GET /tickets/{ticket_id}` → récupérer un ticket par ID  
 - `PUT /tickets/{ticket_id}` → mettre à jour un ticket  
 - `PATCH /tickets/{ticket_id}/close` → fermer un ticket
-- `GET /health` → endpoint santé  
+- `GET /health` → endpoint santé  (pour voir tester viter l'état de serveur)
 
 ---
 
@@ -141,4 +141,4 @@ curl -X PATCH http://127.0.0.1:8010/tickets/1/close
 
 ## Auteur
 
-Projet d’entretien — **Houssem Eddine Selmi**
+Projet d’entretien - **Houssem Eddine Selmi**
