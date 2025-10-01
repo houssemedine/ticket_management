@@ -1,6 +1,6 @@
 import logging
 from typing import List
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, Response,Query, HTTPException
 from app.dependencies import get_db
 from app.schemas.ticket import TicketRead, TicketCreate, TicketUpdate
 from app.repositories.tickets import TicketRepository
@@ -11,13 +11,28 @@ logger = logging.getLogger("tickets.router")
 
 router = APIRouter()
 
+# @router.get("/", response_model=List[TicketRead])
+# def list_tickets(db: Session = Depends(get_db)) -> list[TicketRead]:
+#     """Retourne la liste des tickets """
+#     logger.info("Listing tickets")
+#     repo = TicketRepository(db)
+#     items = repo.list_all()
+#     return items
+
 @router.get("/", response_model=List[TicketRead])
-def list_tickets(db: Session = Depends(get_db)) -> list[TicketRead]:
-    """Retourne la liste des tickets """
-    logger.info("Listing tickets")
+def list_tickets(
+    response: Response,
+    db: Session = Depends(get_db),
+    limit: int = Query(10, ge=1, le=100, description="Nombre d'éléments par page"),
+    offset: int = Query(0, ge=0, description="Décalage de départ"),
+) -> list[TicketRead]:
     repo = TicketRepository(db)
-    items = repo.list_all()
+    total = repo.count_all()
+    items = repo.list_paginated(limit=limit, offset=offset)
+    response.headers["X-Total-Count"] = str(total)
     return items
+
+
 
 @router.post("/", response_model=TicketRead, status_code=status.HTTP_201_CREATED)
 def create_ticket(payload: TicketCreate, db: Session = Depends(get_db)) -> TicketRead:

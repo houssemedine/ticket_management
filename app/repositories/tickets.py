@@ -2,6 +2,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from app.models.ticket import Ticket
 from app.schemas.ticket import TicketCreate, TicketUpdate, TicketStatus
+from sqlalchemy import func
 
 class TicketRepository:
     """Accès données pour les tickets"""
@@ -60,4 +61,11 @@ class TicketRepository:
         self.db.commit()
         self.db.refresh(obj)
         return obj
+    
+    def count_all(self) -> int:
+        return self.db.query(func.count(Ticket.id)).scalar() or 0
+
+    def list_paginated(self, limit: int, offset: int) -> List[Ticket]:
+        q = self.db.query(Ticket).order_by(Ticket.created_at, Ticket.id)
+        return q.limit(limit).offset(offset).all()
 
